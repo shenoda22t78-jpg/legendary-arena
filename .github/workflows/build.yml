@@ -1,15 +1,23 @@
 name: Build APK
-on: [push]
+
+on:
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Build with Buildozer
-      uses: ArtemSBulgakov/buildozer-action@v1
-      with:
-        command: buildozer android debug
-    - uses: actions/upload-artifact@v4
-      with:
-        name: legendary-arena-apk
-        path: bin/*.apk
+      - uses: actions/checkout@v4
+      
+      - name: Build with Buildozer
+        uses: digineo/buildozer-action@v1.4.2
+        with:
+          buildozer_version: stable
+          command: buildozer android debug
+          workdir: .
+          
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: legendary-arena-apk
+          path: bin/*.apk
